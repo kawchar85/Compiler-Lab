@@ -55,7 +55,7 @@ In this example, the first four rules match the arithmetic operators `+`, `-`, `
 
 ### User-defined Functions
 
-In the user-defined functions section, you can define any helper functions that you need for your lexer. This section includes a `main` function. This section is for any additional C or C++ code that you want to include. The only required line is:
+In the user-defined functions section, you can define any helper functions that you need for your lexer. This section includes a `main` function. This section is for any additional C or C++ code that you want to include. If you redefine input(), unput(), output(), or yywrap(), the new versions or supporting subroutines might be here. The only required line is:
 ```C
 main() { yylex(); }
 ```
@@ -79,7 +79,30 @@ int main() {
 }
 ```
 
- # Usage: 
+
+## Lex Predefined Variables/Functions
+
+Flex provides several predefined variables and functions that can be used in your lex program.
+
+### Variables
+
+- `yytext`: The matched string (i.e., the lexeme) of the current rule.
+- `yylineno`: The current line number.
+- `yyin`: The input stream (i.e., the file or stdin).
+- `yyout`: The output stream (i.e., the file or stdout).
+
+### Functions
+
+- `yylex()`: Returns the next token from the input stream.
+- `yyrestart()`: Resets the input stream to a new file or stdin.
+- `yywrap()`: Returns 1 to indicate the end of input.
+
+## Pattern Matching
+
+Add image here
+
+
+ ## Usage: 
  ```
  flex sample1.lex
  gcc lex.yy.c
