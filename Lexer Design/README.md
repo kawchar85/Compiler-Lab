@@ -170,7 +170,7 @@ In Lex patterns are an extended version of the regular expression. Regular expre
  ```
  flex sample1.l
  gcc lex.yy.c
- ./a.exe
+ a OR a.exe OR a < input.txt > output.txt OR a.exe < input.txt > output.txt 
  ```
  
  
