@@ -1,5 +1,5 @@
 # Lexer Design
-This repository contains the source code for a Lexer designed for a compiler using Flex. The Lexer is responsible for analyzing the source code and converting it into a stream of tokens that can be parsed by the compiler.
+This repository contains the source code for a lexer designed for a compiler using Flex. It also provides some basic information on using Flex to create lexers
 
 ## Introduction
 A lexer is a component of a compiler that takes the source code as input and converts it into a stream of tokens that can be easily parsed by the compiler. Flex is a tool for generating lexical analyzers (i.e., lexers) in C or C++.
@@ -82,9 +82,9 @@ int main() {
 ```
 
 
-## Lex Predefined Variables/Functions
+## Lex Predefined
 
-Flex provides several predefined variables and functions that can be used in your lex program.
+Flex provides several predefined variables, functions and options that can be used in your lex program.
 
 ### Variables
 
@@ -100,6 +100,26 @@ Flex provides several predefined variables and functions that can be used in you
 - `yylex()`: Returns the next token from the input stream.
 - `yyrestart()`: Resets the input stream to a new file or stdin.
 - `yywrap()`: Returns 1 to indicate the end of input.
+
+### Options
+ There are several options available in lex. Here are some commonly used ones:
+  - `%option noyywrap`: tells lex not to generate code for handling end-of-file
+  - `%option c++`: generates C++ code instead of C code
+  - `%option outfile="filename"`: specifies the name of the output file
+  - `%option yylineno`: generates code to track line numbers and assign them to the yylineno variable
+  - `%option case-insensitive`: makes lex case-insensitive when matching patterns
+  - `%option prefix="prefix"`: specifies a prefix to add to all function and variable names
+  - `%option warn`: enables warnings during code generation
+  - `%option debug`: generates debug information for the generated lexer
+These options can be included at the top of the lex file, before the rule definitions. These options affect how lex generates the lexer code and how it behaves during compilation and execution. You can include multiple options separated by spaces, for example:
+```lex
+%option noyywrap c++
+```
+or
+```lex
+%option noyywrap
+%option c++
+```
 
 ## Regular Expression
 
@@ -121,15 +141,36 @@ In Lex patterns are an extended version of the regular expression. Regular expre
 | ^            | Matches the beginning of a line. | `^Hello` matches "Hello" at the beginning of a line |
 | $            | Matches the end of a line. | `World$` matches "World" at the end of a line |
 | <>           | A name or list of names in angle brackets at the beginning of a pattern makes that pattern apply only in the given start states. | `<INITIAL> {letter}` matches a letter only in the `INITIAL` state |
-| <<EOF>>      | Matches the end of file. | `<<EOF>>` matches the end of a file |
+| `<<EOF>>`      | Matches the end of file. | `<<EOF>>` matches the end of a file |
+
+### Pattern Matching Examples
+
+| Expression         | Matches                                                |
+|--------------------|--------------------------------------------------------|
+| abc                | abc                                                    |
+| abc*               | ab, abc, abcc, abccc, ...                              |
+| abc+               | abc, abcc, abccc, ...                                   |
+| a(bc)+             | abc, abcbc, abcbcbc, ...                                 |
+| a(bc)?             | a, abc                                                  |
+| [abc]              | one of: a, b, c                                         |
+| [a-z]              | any letter, a-z                                         |
+| [a\-z]             | one of: a, -, z                                         |
+| [-az]              | one of: -, a, z                                         |
+| [A-Za-z0-9]+       | one or more alphanumeric characters                    |
+| [ \t\n]+           | whitespace                                             |
+| [^ab]              | anything except: a, b                                   |
+| [a^b]              | one of: a, ^, b                                         |
+| [a\|b]             | one of: a, \|, b                                        |
+| a\|b               | one of: a, b                                            |
+
+
 
 
  ## Usage: 
  ```
- flex sample1.lex
+ flex sample1.l
  gcc lex.yy.c
  ./a.exe
  ```
  
- ## Options
-  - The %option noyywrap tells lex not to generate code for handling end-of-file
+ 
