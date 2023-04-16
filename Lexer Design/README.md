@@ -6,11 +6,13 @@ A lexer is a component of a compiler that takes the source code as input and con
 
 ## Structure of a Lex Program
 
-A lex program consists of three parts: declarations, rules, and user-defined functions.
+A lex program consists of three parts: declarations, rules, and user-defined functions. Regular definitions can be placed in between the Definition section and the Rules section.
 ```Lex
 %{
 Definition section
 %}
+
+/* Regular definitions can be added here */
 
 %%
 Rules section
@@ -87,9 +89,11 @@ Flex provides several predefined variables and functions that can be used in you
 ### Variables
 
 - `yytext`: The matched string (i.e., the lexeme) of the current rule.
+- `yyleng`: The length of current matched strng.
 - `yylineno`: The current line number.
 - `yyin`: The input stream (i.e., the file or stdin).
 - `yyout`: The output stream (i.e., the file or stdout).
+
 
 ### Functions
 
@@ -97,9 +101,27 @@ Flex provides several predefined variables and functions that can be used in you
 - `yyrestart()`: Resets the input stream to a new file or stdin.
 - `yywrap()`: Returns 1 to indicate the end of input.
 
-## Pattern Matching
+## Regular Expression
 
-Add image here
+In Lex patterns are an extended version of the regular expression. Regular expressions are composed of normal characters, which represent themselves, and metacharacters which have special meaning in a pattern.
+
+| Metacharacter | Meaning                                | Example          |
+|--------------|----------------------------------------|------------------|
+| .            | Matches any single character except the newline character `\n`. | `a.c` matches "abc", "a*c", but not "ac" |
+| []           | Match any one of the characters within the brackets. | `[abc]` matches "a", "b", or "c" |
+| *            | Matches zero or more of the preceding expression. | `ab*c` matches "ac", "abc", "abbc", and so on |
+| +            | Matches one or more occurence of the preceding regular expression. | `ab+c` matches "abc", "abbc", "abbbc", and so on, but not "ac" |
+| ?            | Matches zero or one occurrence of the preceding regular expression. | `ab?c` matches "ac" or "abc" |
+| {}           | A single number `{n}` means n repetitions of the preceding pattern. `{n,m}` are a minimum and maximum number of repetitions of the preceding pattern. | `[0-9]{3}` matches any three-digit number |
+| \            | Used to escape a special character or indicate a special sequence. | `\d` matches any digit, `\n` matches a newline |
+| ()           | Group a series of regular expressions together. | `(ab)+` matches "ab", "abab", "ababab", and so on |
+| \|           | Match either the preceding regular expression or the subsequent regular expression. | `kalu\|wan` matches "kalu" or "wan" |
+| ""           | Match everything within the quotation marks literally. | `"Hello World"` matches "Hello World" |
+| /            | Matches the preceding regular expression but only if followed by the following regular expression. | `0/1` matches "0" in the string "01" but not "0" or "02" |
+| ^            | Matches the beginning of a line. | `^Hello` matches "Hello" at the beginning of a line |
+| $            | Matches the end of a line. | `World$` matches "World" at the end of a line |
+| <>           | A name or list of names in angle brackets at the beginning of a pattern makes that pattern apply only in the given start states. | `<INITIAL> {letter}` matches a letter only in the `INITIAL` state |
+| <<EOF>>      | Matches the end of file. | `<<EOF>>` matches the end of a file |
 
 
  ## Usage: 
@@ -109,4 +131,5 @@ Add image here
  ./a.exe
  ```
  
- 
+ ## Options
+  - The %option noyywrap tells lex not to generate code for handling end-of-file
