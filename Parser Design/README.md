@@ -132,9 +132,11 @@ These options can be included at the top of the yacc file, before the rule defin
 
 Assuming you have a lexer file named `lexer.l` and a parser file named `parser.y`, you can generate the code with the following commands:
  ```
-flex lexer.l
 bison -d parser.y
+flex lexer.l
+gcc parser.tab.c lex.yy.c
+.\a.exe
 
  ```
- 
+The `-d` option tells Bison to generate a header file for the parser. This header file contains definitions for tokens that the parser uses to communicate with the lexer. 
  
