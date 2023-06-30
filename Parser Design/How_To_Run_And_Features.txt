@@ -1,0 +1,19 @@
+How to Run?
+-----------
+bison -d pp.y
+flex lexer.l
+gcc lex.yy.c pp.tab.c -o pp -lfl
+./pp
+
+
+Functionalities:
+---------------
+I handles the following functionalities (a subset of the C programming language):
+
+- Variable declarations with basic types and arrays (any dimentions).
+- Assignments and operations (arithmetic and bitwise) on variables.
+- If-else statements, including nested if-else statements.
+- For loops, while loops, and do-while loops.
+- Function declarations with optional parameters and function calls.
+- Increment and decrement operations on variables.
+
